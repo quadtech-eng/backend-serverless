@@ -1,11 +1,8 @@
 name: Pipeline
-on: 
+on:
   push:
     branches:
   workflow_dispatch:
-
-on:
-  workflow_call:
 
 jobs:
   localstack:
