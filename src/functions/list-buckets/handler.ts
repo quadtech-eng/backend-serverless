@@ -18,7 +18,7 @@ export const listBuckets: APIGatewayProxyHandler = async (): Promise<any> => {
       statusCode: 500,
       body: JSON.stringify(
         {
-          error: "Internal server error",
+          error: "Internal server error, please try again later.",
         },
         null,
         2
