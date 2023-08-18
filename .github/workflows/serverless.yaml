@@ -92,5 +92,5 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          AUTH0_DEV_DOMAIN: ${{ secrets.AUTH0_DEV_DOMAIN }}
-          AUTH0_DEV_AUDIENCE: ${{ secrets.AUTH0_DEV_AUDIENCE }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DEV_DOMAIN }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_DEV_AUDIENCE }}
