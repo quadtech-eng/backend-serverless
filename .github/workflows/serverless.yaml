@@ -104,6 +104,7 @@ jobs:
           AUTH0_AUDIENCE: ${{ secrets.AUTH0_DEV_AUDIENCE }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_DEV_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_DEV_CLIENT_SECRET }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT_DEV }}
 
   uat_plan:
     name: plan uat
@@ -177,6 +178,7 @@ jobs:
           AUTH0_AUDIENCE: ${{ secrets.AUTH0_UAT_AUDIENCE }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_UAT_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_UAT_CLIENT_SECRET }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT_UAT }}
 
   prod_plan:
     name: plan prod
@@ -250,3 +252,4 @@ jobs:
           AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}

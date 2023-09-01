@@ -27,6 +27,7 @@ const serverlessConfiguration: AWS = {
       AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
       AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
       AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+      ENVIRONMENT: process.env.ENVIRONMENT,
     },
     iam: {
       role: {

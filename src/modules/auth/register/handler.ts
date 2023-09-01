@@ -40,7 +40,7 @@ export const register: APIGatewayProxyHandler = async (event) => {
     console.error('error registering new user:', error)
 
     return {
-      statusCode: error?.response?.data?.statusCode || 500,
+      statusCode: error?.response?.status || 500,
       body: JSON.stringify(
         {
           error:

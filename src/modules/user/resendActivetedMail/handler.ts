@@ -3,6 +3,7 @@ import api from '@service/api'
 import { ssmClient } from '@utils/ssm'
 
 import { APIGatewayProxyHandler } from 'aws-lambda'
+import { SSM } from 'src/constants'
 import { ResendActivetedSchema } from 'src/schemas/user'
 
 interface ResendActivetedMailBody {
@@ -15,7 +16,7 @@ export const resendActivetedMail: APIGatewayProxyHandler = async (event) => {
     await ResendActivetedSchema.validate({ email }, { abortEarly: false })
     const ssmToken = await ssmClient.send(
       new GetParameterCommand({
-        Name: 'tokenAuth0',
+        Name: SSM.TOKEN,
       }),
     )
 
