@@ -1,19 +1,19 @@
-import { SSMClient } from "@aws-sdk/client-ssm";
+import { SSMClient } from '@aws-sdk/client-ssm'
 
-let ssmClient = new SSMClient();
+let ssmClient = new SSMClient()
 
-const isLocal = process.env.IS_OFFLINE;
+const isLocal = process.env.IS_OFFLINE
 
 if (isLocal) {
-  const host = process.env.LOCALSTACK_HOST || "localhost";
+  const host = process.env.LOCALSTACK_HOST || 'localhost'
   ssmClient = new SSMClient({
-    region: "us-east-1",
+    region: 'us-east-1',
     credentials: {
-      accessKeyId: "test",
-      secretAccessKey: "test",
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
     },
     endpoint: `http://${host}:4566`,
-  });
+  })
 }
 
-export { ssmClient };
+export { ssmClient }

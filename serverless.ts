@@ -1,40 +1,46 @@
-import type { AWS } from "@serverless/typescript";
-import * as dotenv from "dotenv";
+import type { AWS } from '@serverless/typescript'
+import * as dotenv from 'dotenv'
 
-dotenv.config();
+import { login, recovery, register } from '@modules/auth/index'
+import { auth0Token } from '@modules/jobs/index'
+import { resendActivetedMail } from '@modules/user/index'
 
-import { listBuckets } from "@functions/index";
+dotenv.config()
 
 const serverlessConfiguration: AWS = {
-  service: "relp-core-plataform",
-  frameworkVersion: "3",
-  plugins: ["serverless-esbuild", "serverless-offline"],
+  service: 'relp-core-plataform',
+  frameworkVersion: '3',
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
-    name: "aws",
-    runtime: "nodejs18.x",
-    region: "us-east-1",
+    name: 'aws',
+    runtime: 'nodejs18.x',
+    region: 'us-east-1',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-      NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-      LOCALSTACK_HOST: process.env.LOCALSTACK_HOST || "localhost",
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      LOCALSTACK_HOST: process.env.LOCALSTACK_HOST || 'localhost',
+      AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
+      AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
+      AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+      AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     },
     iam: {
       role: {
         statements: [
           {
-            Effect: "Allow",
+            Effect: 'Allow',
             Action: [
-              "s3:*",
-              "lambda:*",
-              "cloudwatch:*",
-              "logs:*",
-              "dynamodb:*",
+              's3:*',
+              'lambda:*',
+              'cloudwatch:*',
+              'logs:*',
+              'dynamodb:*',
             ],
-            Resource: "*",
+            Resource: '*',
           },
         ],
       },
@@ -42,7 +48,7 @@ const serverlessConfiguration: AWS = {
     httpApi: {
       authorizers: {
         auth0: {
-          identitySource: "$request.header.Authorization",
+          identitySource: '$request.header.Authorization',
           issuerUrl: process.env.AUTH0_DOMAIN,
           audience: [process.env.AUTH0_AUDIENCE],
         },
@@ -51,7 +57,11 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
-    listBuckets,
+    register,
+    login,
+    recovery,
+    resendActivetedMail,
+    auth0Token,
   },
   package: { individually: true },
   custom: {
@@ -60,12 +70,12 @@ const serverlessConfiguration: AWS = {
       minify: false,
       sourcemap: true,
       exclude: [],
-      target: "node18",
-      define: { "require.resolve": undefined },
-      platform: "node",
+      target: 'node18',
+      define: { 'require.resolve': undefined },
+      platform: 'node',
       concurrency: 10,
     },
   },
-};
+}
 
-module.exports = serverlessConfiguration;
+module.exports = serverlessConfiguration
