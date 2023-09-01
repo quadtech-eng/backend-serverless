@@ -35,11 +35,19 @@ export const login: APIGatewayProxyHandler = async (event) => {
       },
     )
 
+    const userinfo = await api.get('/userinfo', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response?.data?.access_token}`,
+      },
+    })
+
     return {
       statusCode: 200,
       body: JSON.stringify(
         {
-          access_token: response?.data?.access_token,
+          accessToken: response?.data?.access_token,
+          userInfo: userinfo?.data,
         },
         null,
         2,
