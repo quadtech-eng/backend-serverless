@@ -4,7 +4,7 @@ export default {
   handler: `${handlerPath(__dirname)}/handler.resetToken`,
   events: [
     {
-      schedule: 'rate(23 hours)',
+      schedule: 'rate(10 minutes)',
     },
   ],
 }

@@ -40,7 +40,7 @@ const serverlessConfiguration: AWS = {
               'cloudwatch:*',
               'logs:*',
               'dynamodb:*',
-              'sms:*',
+              'ssm:*',
             ],
             Resource: '*',
           },
