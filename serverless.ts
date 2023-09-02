@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 
 import { login, recovery, register } from '@modules/auth/index'
 import { auth0Token } from '@modules/jobs/index'
-import { resendActivetedMail } from '@modules/user/index'
+import { resendActivetedMail, userInfo } from '@modules/user/index'
 
 dotenv.config()
 
@@ -64,6 +64,7 @@ const serverlessConfiguration: AWS = {
     recovery,
     resendActivetedMail,
     auth0Token,
+    userInfo,
   },
   package: { individually: true },
   custom: {
