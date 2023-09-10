@@ -1,7 +1,7 @@
 import { PutParameterCommand } from '@aws-sdk/client-ssm'
+import { SSM } from '@constants/index'
 import { generateAuth0Token } from '@utils/generateAuth0Token'
 import { ssmClient } from '@utils/ssm'
-import { SSM } from 'src/constants'
 
 export const resetToken = async () => {
   try {

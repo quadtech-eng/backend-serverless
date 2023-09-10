@@ -1,9 +1,9 @@
 import type { AWS } from '@serverless/typescript'
 import * as dotenv from 'dotenv'
 
-import { login, recovery, register } from '@modules/auth/index'
-import { auth0Token } from '@modules/jobs/index'
-import { resendActivetedMail, userInfo } from '@modules/user/index'
+import * as authModule from '@modules/auth/index'
+import * as jobsModule from '@modules/jobs/index'
+import * as userModule from '@modules/user/index'
 
 dotenv.config()
 
@@ -57,14 +57,10 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  // import the function via paths
   functions: {
-    register,
-    login,
-    recovery,
-    resendActivetedMail,
-    auth0Token,
-    userInfo,
+    ...authModule,
+    ...jobsModule,
+    ...userModule,
   },
   package: { individually: true },
   custom: {

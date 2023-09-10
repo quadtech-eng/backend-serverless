@@ -4,7 +4,7 @@ import { APIGatewayProxyHandler } from 'aws-lambda'
 
 export const userInfo: APIGatewayProxyHandler = async (event) => {
   try {
-    const token = event.headers.authorization.split(' ')[1]
+    const token = event?.headers?.authorization.split(' ')[1]
     const userinfo = await api.get('/userinfo', {
       headers: {
         'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export const userInfo: APIGatewayProxyHandler = async (event) => {
     })
 
     return {
-      statusCode: 200,
+      statusCode: userinfo?.data?.status || 200,
       body: JSON.stringify(
         {
           userInfo: userinfo?.data,
@@ -23,7 +23,13 @@ export const userInfo: APIGatewayProxyHandler = async (event) => {
       ),
     }
   } catch (error) {
-    console.error('error geting user info:', error)
+    console.error(
+      'error geting user info:',
+      error?.errors ||
+        error?.response?.data?.description ||
+        error?.response?.data?.error ||
+        error,
+    )
 
     return {
       statusCode: error?.response?.status || 500,

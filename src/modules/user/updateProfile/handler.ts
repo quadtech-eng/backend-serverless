@@ -1,40 +1,31 @@
 import { GetParameterCommand } from '@aws-sdk/client-ssm'
 import api from '@service/api'
+import { parseToken } from '@utils/parseToken'
 import { ssmClient } from '@utils/ssm'
 
 import { SSM } from '@constants/index'
-import { ResendActivetedSchema } from '@schemas/user'
+import { UpdateProfileSchema } from '@schemas/user'
 import { APIGatewayProxyHandler } from 'aws-lambda'
 
-interface ResendActivetedMailBody {
-  email: string
+interface UpdateProfileBody {
+  name: string
 }
 
-export const resendActivetedMail: APIGatewayProxyHandler = async (event) => {
+export const updateProfile: APIGatewayProxyHandler = async (event) => {
   try {
-    const { email } = JSON.parse(event?.body) as ResendActivetedMailBody
-    await ResendActivetedSchema.validate({ email }, { abortEarly: false })
+    const { name } = JSON.parse(event?.body) as UpdateProfileBody
+    const { sub: userId } = parseToken(event?.headers?.authorization)
+    await UpdateProfileSchema.validate({ name }, { abortEarly: false })
     const ssmToken = await ssmClient.send(
       new GetParameterCommand({
         Name: SSM.TOKEN,
       }),
     )
 
-    const response = await api.get(`/api/v2/users-by-email?email=${email}`, {
-      headers: {
-        Authorization: `Bearer ${ssmToken.Parameter?.Value}`,
-      },
-    })
-
-    await api.post(
-      `/api/v2/jobs/verification-email`,
+    const response = await api.patch(
+      `/api/v2/users/${userId}`,
       {
-        user_id: response.data[0].user_id,
-        client_id: process.env.AUTH0_CLIENT_ID,
-        identity: {
-          user_id: response.data[0].identities[0].user_id,
-          provider: response.data[0].identities[0].provider,
-        },
+        name,
       },
       {
         headers: {
@@ -47,7 +38,7 @@ export const resendActivetedMail: APIGatewayProxyHandler = async (event) => {
       statusCode: response?.data?.status || 201,
       body: JSON.stringify(
         {
-          message: 'User activation email resent successfully.',
+          message: 'User updated successfully.',
         },
         null,
         2,
@@ -55,7 +46,7 @@ export const resendActivetedMail: APIGatewayProxyHandler = async (event) => {
     }
   } catch (error) {
     console.error(
-      'User activation email resent error:',
+      'User updated error:',
       error?.errors ||
         error?.response?.data?.description ||
         error?.response?.data?.error ||

@@ -1,8 +1,8 @@
 import api from '@service/api'
 
+import { AUTH0 } from '@constants/index'
+import { RegisterSchema } from '@schemas/auth'
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { AUTH0 } from 'src/constants'
-import { RegisterSchema } from 'src/schemas/auth'
 
 interface RegisterBody {
   name: string
@@ -12,7 +12,7 @@ interface RegisterBody {
 
 export const register: APIGatewayProxyHandler = async (event) => {
   try {
-    const { name, email, password } = JSON.parse(event.body) as RegisterBody
+    const { name, email, password } = JSON.parse(event?.body) as RegisterBody
     await RegisterSchema.validate(
       { name, email, password },
       { abortEarly: false },
@@ -37,13 +37,23 @@ export const register: APIGatewayProxyHandler = async (event) => {
       ),
     }
   } catch (error) {
-    console.error('error registering new user:', error)
+    console.error(
+      'error registering new user:',
+      (error?.response?.data?.description?.rules &&
+        'Password does not meet strength requirements') ||
+        error?.errors ||
+        error?.response?.data?.description ||
+        error?.response?.data?.error ||
+        error,
+    )
 
     return {
       statusCode: error?.response?.status || 500,
       body: JSON.stringify(
         {
           error:
+            (error?.response?.data?.description?.rules &&
+              'Password does not meet strength requirements') ||
             error?.errors ||
             error?.response?.data?.description ||
             error?.response?.data?.error ||

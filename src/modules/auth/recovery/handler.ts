@@ -1,8 +1,8 @@
 import api from '@service/api'
 
+import { AUTH0 } from '@constants/index'
+import { RecoverySchema } from '@schemas/auth'
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { AUTH0 } from 'src/constants'
-import { RecoverySchema } from 'src/schemas/auth'
 
 interface RecoveryBody {
   email: string
@@ -10,7 +10,7 @@ interface RecoveryBody {
 
 export const recovery: APIGatewayProxyHandler = async (event) => {
   try {
-    const { email } = JSON.parse(event.body) as RecoveryBody
+    const { email } = JSON.parse(event?.body) as RecoveryBody
     await RecoverySchema.validate({ email }, { abortEarly: false })
 
     const response = await api.post('/dbconnections/change_password', {
@@ -30,7 +30,13 @@ export const recovery: APIGatewayProxyHandler = async (event) => {
       ),
     }
   } catch (error) {
-    console.error('error registering new user:', error)
+    console.error(
+      'error registering new user:',
+      error?.errors ||
+        error?.response?.data?.description ||
+        error?.response?.data?.error ||
+        error,
+    )
 
     return {
       statusCode: error?.response?.status || 500,

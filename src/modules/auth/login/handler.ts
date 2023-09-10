@@ -1,8 +1,8 @@
 import api from '@service/api'
 
+import { AUTH0 } from '@constants/index'
+import { LoginSchema } from '@schemas/auth'
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { AUTH0 } from 'src/constants'
-import { LoginSchema } from 'src/schemas/auth'
 
 interface LoginUserBody {
   email: string
@@ -11,8 +11,12 @@ interface LoginUserBody {
 
 export const login: APIGatewayProxyHandler = async (event) => {
   try {
-    const { email, password } = JSON.parse(event.body) as LoginUserBody
-    await LoginSchema.validate({ email, password }, { abortEarly: false })
+    const { email, password } = JSON.parse(event?.body) as LoginUserBody
+    const clientIp = event?.headers['client-ip']
+    await LoginSchema.validate(
+      { email, password, clientIp },
+      { abortEarly: false },
+    )
 
     const response = await api.post(
       '/oauth/token',
@@ -28,9 +32,8 @@ export const login: APIGatewayProxyHandler = async (event) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          // TODO confirmar melhor forma de pegar o ip do client
           // auth0-forwarded-for serve como protecao contra ataques força bruta
-          'auth0-forwarded-for': event.headers['client-ip'],
+          'auth0-forwarded-for': clientIp,
         },
       },
     )
@@ -54,7 +57,13 @@ export const login: APIGatewayProxyHandler = async (event) => {
       ),
     }
   } catch (error) {
-    console.error('error registering new user:', error)
+    console.error(
+      'error registering new user:',
+      error?.errors ||
+        error?.response?.data?.description ||
+        error?.response?.data?.error ||
+        error,
+    )
 
     return {
       statusCode: error?.response?.status || 500,
