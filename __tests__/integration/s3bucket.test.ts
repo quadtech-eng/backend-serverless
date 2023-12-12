@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv'
 import {
   CreateBucketCommand,
   DeleteBucketCommand,
@@ -6,11 +7,14 @@ import {
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 import { s3Client } from '@utils/s3'
 
+dotenv.config()
+
 describe('Testing AWS Servicess offline with LocalStack', () => {
   const bucketConfig = {
     Bucket: 'test',
   }
   beforeAll(async () => {
+    console.log('env.IS_OFFLINE', process.env.IS_OFFLINE)
     await s3Client.send(new CreateBucketCommand(bucketConfig))
   })
 

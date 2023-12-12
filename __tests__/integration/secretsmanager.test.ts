@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv'
 import {
   CreateSecretCommand,
   DeleteSecretCommand,
@@ -8,6 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 
 import { smClient } from '@utils/secretsmanager'
 
+dotenv.config()
 describe('Test secretsmanager', () => {
   const secret = {
     Name: `secretName-${Date.now()}`,

@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv'
 import {
   DeleteParameterCommand,
   GetParameterCommand,
@@ -7,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 
 import { ssmClient } from '@utils/ssm'
 
+dotenv.config()
 describe('Test ssm', () => {
   const param = {
     name: `parameterName-${Date.now()}`,
