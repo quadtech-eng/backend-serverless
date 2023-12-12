@@ -15,6 +15,6 @@ export const resetToken = async () => {
       }),
     )
   } catch (error) {
-    console.error('User activation email resent successfully error:', error)
+    console.error('Update service token error:', error)
   }
 }
