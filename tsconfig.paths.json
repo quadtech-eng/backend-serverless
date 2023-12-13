@@ -2,11 +2,24 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@constants/*": ["src/constants/*"],
-      "@modules/*": ["src/modules/*"],
-      "@schemas/*": ["src/schemas/*"],
-      "@service/*": ["src/service/*"],
-      "@utils/*": ["src/utils/*"]
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@schemas/*": [
+        "src/schemas/*"
+      ],
+      "@service/*": [
+        "src/service/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ]
     }
   }
 }

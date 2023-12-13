@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript'
 import * as dotenv from 'dotenv'
 
+import * as config from '@config/general'
 import * as authModule from '@modules/auth/index'
 import * as jobsModule from '@modules/jobs/index'
 import * as userModule from '@modules/user/index'
@@ -10,11 +11,16 @@ dotenv.config()
 const serverlessConfiguration: AWS = {
   service: 'relp-core-plataform',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: [
+    'serverless-esbuild',
+    'serverless-offline',
+    'serverless-plugin-log-retention',
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'us-east-1',
+    memorySize: config.environment[process.env.ENVIRONMENT].memorySize,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -28,6 +34,10 @@ const serverlessConfiguration: AWS = {
       AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
       AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
       ENVIRONMENT: process.env.ENVIRONMENT,
+      AWS_ACCOUNT_OWNER: process.env.AWS_ACCOUNT_OWNER,
+      AWS_VPC_SECURITY_GROUP_ID: process.env.AWS_VPC_SECURITY_GROUP_ID,
+      AWS_VPC_SUBNET_ID_1: process.env.AWS_VPC_SUBNET_ID_1,
+      AWS_VPC_SUBNET_ID_2: process.env.AWS_VPC_SUBNET_ID_2,
     },
     iam: {
       role: {
@@ -39,8 +49,9 @@ const serverlessConfiguration: AWS = {
               'lambda:*',
               'cloudwatch:*',
               'logs:*',
-              'dynamodb:*',
               'ssm:*',
+              'sns:*',
+              'sqs:*',
             ],
             Resource: '*',
           },
@@ -74,6 +85,7 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    logRetentionInDays: 30,
   },
 }
 

@@ -14,7 +14,6 @@ describe('Testing AWS Servicess offline with LocalStack', () => {
     Bucket: 'test',
   }
   beforeAll(async () => {
-    console.log('env.IS_OFFLINE', process.env.IS_OFFLINE)
     await s3Client.send(new CreateBucketCommand(bucketConfig))
   })
 
