@@ -11,6 +11,7 @@ class Branch extends Model {
         state: DataTypes.STRING,
         country: DataTypes.STRING,
         postalCode: DataTypes.STRING,
+        enabled: DataTypes.BOOLEAN,
       },
       {
         sequelize,

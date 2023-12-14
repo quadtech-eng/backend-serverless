@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv'
 import * as config from '@config/general'
 import * as authModule from '@modules/auth/index'
 import * as jobsModule from '@modules/jobs/index'
+import * as publicModule from '@modules/public/index'
 import * as userModule from '@modules/user/index'
 
 dotenv.config()
@@ -38,6 +39,12 @@ const serverlessConfiguration: AWS = {
       AWS_VPC_SECURITY_GROUP_ID: process.env.AWS_VPC_SECURITY_GROUP_ID,
       AWS_VPC_SUBNET_ID_1: process.env.AWS_VPC_SUBNET_ID_1,
       AWS_VPC_SUBNET_ID_2: process.env.AWS_VPC_SUBNET_ID_2,
+      DB_DIALECT: process.env.DB_DIALECT,
+      DB_NAME: process.env.DB_NAME,
+      DB_USERNAME: process.env.DB_USERNAME,
+      DB_PASSWORD: process.env.DB_PASSWORD,
+      DB_HOST: process.env.DB_HOST,
+      DB_PORT: process.env.DB_PORT,
     },
     iam: {
       role: {
@@ -71,6 +78,7 @@ const serverlessConfiguration: AWS = {
   functions: {
     ...authModule,
     ...jobsModule,
+    ...publicModule,
     ...userModule,
   },
   package: { individually: true },
