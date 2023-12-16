@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv'
 import { Sequelize } from 'sequelize'
 import { environment } from 'src/config/database'
-import { AppConfig, Branch } from 'src/models'
+import { AppConfig, Branch, VehicleManufacturers } from 'src/models'
 
 dotenv.config()
 
-const models: any = [AppConfig, Branch]
+const models: any = [AppConfig, Branch, VehicleManufacturers]
 class Database {
   public connection: Sequelize
   constructor() {
