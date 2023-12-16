@@ -11,7 +11,7 @@ jobs:
       localstack:
         image: localstack/localstack:latest
         env:
-          SERVICES: s3, ssm, secretsmanager
+          SERVICES: lambda, s3, ssm, secretsmanager
           DEFAULT_REGION: ${{secrets.AWS_REGION}}
           AWS_ACCESS_KEY_ID: test
           AWS_SECRET_ACCESS_KEY: test
