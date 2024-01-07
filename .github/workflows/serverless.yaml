@@ -106,9 +106,6 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_DEV_CLIENT_SECRET }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT_DEV }}
           AWS_ACCOUNT_OWNER: ${{ secrets.AWS_ACCOUNT_OWNER }}
-          AWS_VPC_SECURITY_GROUP_ID: ${{ secrets.AWS_VPC_SECURITY_GROUP_ID }}
-          AWS_VPC_SUBNET_ID_1: ${{ secrets.AWS_VPC_SUBNET_ID_1 }}
-          AWS_VPC_SUBNET_ID_2: ${{ secrets.AWS_VPC_SUBNET_ID_2 }}
           DB_DIALECT: ${{ secrets.DB_DIALECT }} 
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -190,9 +187,6 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_UAT_CLIENT_SECRET }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT_UAT }}
           AWS_ACCOUNT_OWNER: ${{ secrets.AWS_ACCOUNT_OWNER }}
-          AWS_VPC_SECURITY_GROUP_ID: ${{ secrets.AWS_VPC_SECURITY_GROUP_ID }}
-          AWS_VPC_SUBNET_ID_1: ${{ secrets.AWS_VPC_SUBNET_ID_1 }}
-          AWS_VPC_SUBNET_ID_2: ${{ secrets.AWS_VPC_SUBNET_ID_2 }}
           DB_DIALECT: ${{ secrets.DB_DIALECT }} 
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -274,9 +268,6 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
           AWS_ACCOUNT_OWNER: ${{ secrets.AWS_ACCOUNT_OWNER }}
-          AWS_VPC_SECURITY_GROUP_ID: ${{ secrets.AWS_VPC_SECURITY_GROUP_ID }}
-          AWS_VPC_SUBNET_ID_1: ${{ secrets.AWS_VPC_SUBNET_ID_1 }}
-          AWS_VPC_SUBNET_ID_2: ${{ secrets.AWS_VPC_SUBNET_ID_2 }}
           DB_DIALECT: ${{ secrets.DB_DIALECT }} 
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
