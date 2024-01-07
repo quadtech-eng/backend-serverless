@@ -1,12 +1,38 @@
+import * as dotenv from 'dotenv'
 import { APIGatewayProxyHandler } from 'aws-lambda'
+import '../../../database'
 
-export const home: APIGatewayProxyHandler = async () => {
+import { VehicleManufacturer } from '@models/index'
+import { getImageUrl } from '@utils/helper'
+
+dotenv.config()
+
+export const homepage: APIGatewayProxyHandler = async () => {
   try {
+    const vehicleManufacturers: any = await VehicleManufacturer.findAll({
+      where: {
+        enabled: true,
+      },
+      attributes: ['id', 'manufacturer', 'image', 'homepageOrder'],
+      order: [['homepageOrder', 'ASC']],
+      raw: true,
+    })
+
+    const newVehicleManufacturers = await Promise.all(
+      vehicleManufacturers.map(async (item) => {
+        const newImage = await getImageUrl(
+          item.image,
+          `${process.env.ENVIRONMENT}-${process.env.BUCKET_MANUFACTURER_NAME}`,
+        )
+        return { ...item, image: newImage }
+      }),
+    )
+
     return {
       statusCode: 200,
       body: JSON.stringify(
         {
-          brands: [],
+          brands: newVehicleManufacturers,
           popular: [],
           mostWanted: [],
           premium: [],

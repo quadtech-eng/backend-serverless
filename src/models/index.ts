@@ -1,5 +1,5 @@
 import AppConfig from './AppConfig'
 import Branch from './Branch'
-import VehicleManufacturers from './VehicleManufacturers'
+import VehicleManufacturer from './VehicleManufacturer'
 
-export { AppConfig, Branch, VehicleManufacturers }
+export { AppConfig, Branch, VehicleManufacturer }

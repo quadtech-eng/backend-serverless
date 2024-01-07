@@ -32,7 +32,7 @@ export const environment = {
       ssl: {
         require: true,
         rejectUnauthorized: false,
-        ca: 'rds-ca-rsa2048-g1',
+        ca: '"rds-combined-ca-bundle.pem"',
       },
     },
     define: {
@@ -55,7 +55,7 @@ export const environment = {
       ssl: {
         require: true,
         rejectUnauthorized: false,
-        ca: 'rds-ca-rsa2048-g1',
+        ca: '"rds-combined-ca-bundle.pem"',
       },
     },
     define: {
@@ -78,7 +78,7 @@ export const environment = {
       ssl: {
         require: true,
         rejectUnauthorized: false,
-        ca: 'rds-ca-rsa2048-g1',
+        ca: '"rds-combined-ca-bundle.pem"',
       },
     },
     define: {

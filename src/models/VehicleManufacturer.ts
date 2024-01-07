@@ -1,13 +1,13 @@
 import { DataTypes, Model, Sequelize } from 'sequelize'
 
-class VehicleManufacturers extends Model {
+class VehicleManufacturer extends Model {
   static initWithSequelize(sequelize: Sequelize) {
-    return VehicleManufacturers.init(
+    return VehicleManufacturer.init(
       {
         wmi: DataTypes.STRING,
         manufacturer: DataTypes.STRING,
-        description: DataTypes.TEXT,
         image: DataTypes.STRING,
+        homepageOrder: DataTypes.INTEGER,
         showOnHome: DataTypes.BOOLEAN,
         enabled: DataTypes.BOOLEAN,
       },
@@ -20,4 +20,4 @@ class VehicleManufacturers extends Model {
   }
 }
 
-export default VehicleManufacturers
+export default VehicleManufacturer

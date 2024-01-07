@@ -13,3 +13,4 @@ coverage
 
 # Serverless directories
 .env
+.DS_Store

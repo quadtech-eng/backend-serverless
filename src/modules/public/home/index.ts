@@ -1,7 +1,7 @@
 import { handlerPath } from '@utils/handler-resolver'
 
 export default {
-  handler: `${handlerPath(__dirname)}/handler.home`,
+  handler: `${handlerPath(__dirname)}/handler.homepage`,
   events: [
     {
       httpApi: {
