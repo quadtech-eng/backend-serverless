@@ -2,11 +2,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@infraConfig/*": [
+        "config/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
       "@constants/*": [
         "src/constants/*"
       ],
-      "@config/*": [
-        "config/*"
+      "@database/*": [
+        "src/database/*"
       ],
       "@modules/*": [
         "src/modules/*"

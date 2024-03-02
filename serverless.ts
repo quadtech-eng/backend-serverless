@@ -1,13 +1,13 @@
+import { config } from 'dotenv'
 import type { AWS } from '@serverless/typescript'
-import * as dotenv from 'dotenv'
 
-import * as config from '@config/general'
+import * as infraConfig from '@infraConfig/general'
 import * as authModule from '@modules/auth/index'
 import * as jobsModule from '@modules/jobs/index'
 import * as publicModule from '@modules/public/index'
 import * as userModule from '@modules/user/index'
 
-dotenv.config()
+config()
 
 const serverlessConfiguration: AWS = {
   service: 'relp-core-plataform',
@@ -21,7 +21,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'us-east-1',
-    memorySize: config.environment[process.env.ENVIRONMENT].memorySize,
+    memorySize: infraConfig.environment[process.env.ENVIRONMENT].memorySize,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,

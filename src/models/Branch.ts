@@ -1,8 +1,19 @@
 import { DataTypes, Model, Sequelize } from 'sequelize'
+import { randomUUID } from 'node:crypto'
 
 class Branch extends Model {
+  public id: string
+  public name: string
+  public address: string
+  public complement: string
+  public city: string
+  public state: string
+  public country: string
+  public postalCode: string
+  public enabled: boolean
+
   static initWithSequelize(sequelize: Sequelize) {
-    return Branch.init(
+    super.init(
       {
         name: DataTypes.STRING,
         address: DataTypes.STRING,
@@ -17,9 +28,20 @@ class Branch extends Model {
         sequelize,
         modelName: 'branchs',
         tableName: 'branchs',
+        hooks: {
+          beforeSave: (item: Branch) => {
+            if (!item.id) {
+              item.id = randomUUID()
+            }
+          },
+        },
       },
     )
+
+    return this
   }
+
+  static associate() {}
 }
 
 export default Branch

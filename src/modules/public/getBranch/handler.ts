@@ -1,10 +1,11 @@
-import * as dotenv from 'dotenv'
+import { config } from 'dotenv'
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import '../../../database'
 
+import '@database/index'
 import { Branch } from '@models/index'
 
-dotenv.config()
+config()
+
 export const getBranch: APIGatewayProxyHandler = async () => {
   try {
     const branchs: any = await Branch.findAll({

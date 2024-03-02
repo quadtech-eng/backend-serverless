@@ -1,5 +1,21 @@
 import AppConfig from './AppConfig'
 import Branch from './Branch'
-import VehicleManufacturer from './VehicleManufacturer'
+import Faq from './Faq'
+import Image from './Image'
+import ProductBrand from './ProductBrand'
+import ProductModel from './ProductModel'
+import ProductType from './ProductType'
+import Vehicle from './Vehicle'
+import VehicleOffer from './VehicleOffer'
 
-export { AppConfig, Branch, VehicleManufacturer }
+export {
+  AppConfig,
+  Branch,
+  Faq,
+  Image,
+  ProductBrand,
+  ProductModel,
+  ProductType,
+  Vehicle,
+  VehicleOffer,
+}

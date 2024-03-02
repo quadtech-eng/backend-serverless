@@ -4,9 +4,10 @@
   "description": "RELP Core Plataform",
   "main": "serverless.ts",
   "scripts": {
-    "start": "npx nodemon --exec npm run offline",
+    "start": "npm run compose && npm run infra-local && npx nodemon --exec npm run offline",
+    "infra-local": "chmod +x ./scripts/* && chmod +x ./scripts/s3/* && sh ./scripts/index.sh > /dev/null 2>&1 &",
     "offline": "npx sls offline start --host 0.0.0.0  --reloadHandler --ignoreJWTSignature",
-    "compose": "docker-compose up",
+    "compose": "docker-compose up -d",
     "test": "IS_OFFLINE=true npx jest --collect-coverage",
     "test:watch": "IS_OFFLINE=true npx jest --watch-all",
     "deploy:dev": "serverless deploy --stage dev --aws-profile default",

@@ -1,7 +1,7 @@
-import * as dotenv from 'dotenv'
 import pg from 'pg'
+import { config } from 'dotenv'
 
-dotenv.config()
+config()
 
 export const environment = {
   local: {

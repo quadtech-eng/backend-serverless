@@ -1,10 +1,11 @@
-import * as dotenv from 'dotenv'
+import { config } from 'dotenv'
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import '../../../database'
 
+import '@database/index'
 import { AppConfig } from '@models/index'
 
-dotenv.config()
+config()
+
 export const getAppConfig: APIGatewayProxyHandler = async () => {
   try {
     const appConfig: any = await AppConfig.findOne({

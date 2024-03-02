@@ -1,11 +1,34 @@
-import * as dotenv from 'dotenv'
+import { config } from 'dotenv'
 import { Sequelize } from 'sequelize'
-import { environment } from 'src/config/database'
-import { AppConfig, Branch, VehicleManufacturer } from 'src/models'
 
-dotenv.config()
+import { environment } from '@config/database'
+import {
+  AppConfig as appConfigModel,
+  Branch as branchModel,
+  Faq as faqModel,
+  Image as imageModel,
+  ProductBrand as productBrandModel,
+  ProductModel as productModelModel,
+  ProductType as productTypeModel,
+  Vehicle as vehicleModel,
+  VehicleOffer as vehicleOfferModel,
+} from '@models/index'
 
-const models: any = [AppConfig, Branch, VehicleManufacturer]
+config()
+
+const models = {
+  AppConfig: appConfigModel,
+  Branch: branchModel,
+  Faq: faqModel,
+  Image: imageModel,
+  ProductBrand: productBrandModel,
+  ProductModel: productModelModel,
+  ProductType: productTypeModel,
+  Vehicle: vehicleModel,
+  VehicleOffer: vehicleOfferModel,
+} as const
+export type dbType = typeof models
+
 class Database {
   public connection: Sequelize
   constructor() {
@@ -13,11 +36,17 @@ class Database {
   }
 
   init() {
-    this.connection = new Sequelize(environment[process.env.ENVIRONMENT])
-    models.forEach((model) => model.initWithSequelize(this.connection))
-    models.forEach((model) => {
+    this.connection = new Sequelize(
+      environment[process?.env?.ENVIRONMENT || 'local'],
+    )
+    Object.keys(models).forEach((key) => {
+      const model = models[key as keyof dbType]
+      model.initWithSequelize(this.connection)
+    })
+    Object.keys(models).forEach((key) => {
+      const model = models[key as keyof dbType]
       if (model.associate) {
-        model.associate(this.connection.models)
+        model.associate(models)
       }
     })
   }

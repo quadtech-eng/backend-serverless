@@ -1,0 +1,1 @@
+aws s3api create-bucket --bucket local-relp-image --region us-east-1 --endpoint-url http://localhost:4566
