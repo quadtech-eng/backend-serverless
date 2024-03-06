@@ -26,8 +26,8 @@ class Branch extends Model {
       },
       {
         sequelize,
-        modelName: 'branchs',
-        tableName: 'branchs',
+        modelName: 'branches',
+        tableName: 'branches',
         hooks: {
           beforeSave: (item: Branch) => {
             if (!item.id) {

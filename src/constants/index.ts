@@ -7,3 +7,14 @@ export const AUTH0 = {
 export const SSM = {
   TOKEN: `${process.env.ENVIRONMENT}-tokenAuth0`,
 }
+
+export const PAYMENT_TYPE = {
+  CASH: 'CASH',
+  FINANCING: 'FINANCING',
+}
+
+export const FORM_OF_PAYMENT = {
+  PER_WEEK: 'PER_WEEK',
+  FORTNITE: 'FORTNITE',
+  PER_MONTH: 'PER_MONTH',
+}

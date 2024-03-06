@@ -10,6 +10,7 @@ import {
   ProductBrand as productBrandModel,
   ProductModel as productModelModel,
   ProductType as productTypeModel,
+  Simulation as simulationModel,
   Vehicle as vehicleModel,
   VehicleOffer as vehicleOfferModel,
 } from '@models/index'
@@ -24,6 +25,7 @@ const models = {
   ProductBrand: productBrandModel,
   ProductModel: productModelModel,
   ProductType: productTypeModel,
+  Simulation: simulationModel,
   Vehicle: vehicleModel,
   VehicleOffer: vehicleOfferModel,
 } as const

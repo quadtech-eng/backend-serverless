@@ -19,7 +19,7 @@ const serverlessConfiguration: AWS = {
   ],
   provider: {
     name: 'aws',
-    runtime: 'nodejs18.x',
+    runtime: 'nodejs20.x',
     region: 'us-east-1',
     memorySize: infraConfig.environment[process.env.ENVIRONMENT].memorySize,
     apiGateway: {
@@ -85,7 +85,7 @@ const serverlessConfiguration: AWS = {
       minify: false,
       sourcemap: true,
       exclude: [],
-      target: 'node18',
+      target: 'node20',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,

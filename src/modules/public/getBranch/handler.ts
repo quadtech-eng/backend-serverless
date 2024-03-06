@@ -8,7 +8,7 @@ config()
 
 export const getBranch: APIGatewayProxyHandler = async () => {
   try {
-    const branchs: any = await Branch.findAll({
+    const branches: any = await Branch.findAll({
       where: {
         enabled: true,
       },
@@ -20,14 +20,14 @@ export const getBranch: APIGatewayProxyHandler = async () => {
       statusCode: 200,
       body: JSON.stringify(
         {
-          branchs,
+          branches,
         },
         null,
         2,
       ),
     }
   } catch (error) {
-    console.error('Erro to get branchs list:', error?.errors || error)
+    console.error('Erro to get branches list:', error?.errors || error)
     return {
       statusCode: 500,
       body: JSON.stringify(
