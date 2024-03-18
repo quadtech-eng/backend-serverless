@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv'
+import { config } from 'dotenv'
 import {
   CreateBucketCommand,
   DeleteBucketCommand,
@@ -7,7 +7,7 @@ import {
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 import { s3Client } from '@utils/s3'
 
-dotenv.config()
+config()
 
 describe('Testing AWS Servicess offline with LocalStack', () => {
   const bucketConfig = {

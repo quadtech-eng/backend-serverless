@@ -12,7 +12,7 @@ export const getBranch: APIGatewayProxyHandler = async () => {
       where: {
         enabled: true,
       },
-      attributes: ['id', 'city', 'country'],
+      attributes: ['id', 'city', 'country', 'comingSoon'],
       raw: true,
     })
 

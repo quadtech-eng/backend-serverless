@@ -11,6 +11,7 @@ class Branch extends Model {
   public country: string
   public postalCode: string
   public enabled: boolean
+  public comingSoon: boolean
 
   static initWithSequelize(sequelize: Sequelize) {
     super.init(
@@ -23,6 +24,7 @@ class Branch extends Model {
         country: DataTypes.STRING,
         postalCode: DataTypes.STRING,
         enabled: DataTypes.BOOLEAN,
+        comingSoon: DataTypes.BOOLEAN,
       },
       {
         sequelize,
