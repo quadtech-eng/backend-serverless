@@ -1,6 +1,8 @@
 import { supabase } from '../lib/supabase.client';
-import { IUserData } from '../types/user.interface';
+import { IUserData, ITokenPayload, ILoginData } from '../types/user.interface';
 import * as bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+const jwtSecret = process.env.JWT_SECRET!
 
 export const registerService = async (userData: IUserData) => {
     try {
@@ -59,6 +61,44 @@ export const registerService = async (userData: IUserData) => {
         };
     } catch (error: any) {
         console.error('Erro no cadastro:', error);
+        throw error;
+    }
+};
+
+export const loginService = async (data: ILoginData) => {
+    try {
+
+        const { data: userData, error: userError } = await supabase
+            .from('profiles')
+            .select('id, full_name, email, user_password, user_type')
+            .eq('email', data.email)
+            .single();
+
+        if (userError || !userData) {
+            throw new Error('Credenciais inválidas.');
+        }
+
+        const isPasswordValid = await bcrypt.compare(data.userPassword, userData.user_password);
+
+        if (!isPasswordValid) {
+            throw new Error('Credenciais inválidas.');
+        }
+
+        if (userData.user_type !== data.userType) {
+            throw new Error("Tipo de usuário diferente")
+        }
+
+        const tokenPayload: ITokenPayload = {
+            userId: userData.id,
+            userType: userData.user_type,
+        };
+        const token = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '1d' });
+
+        const { user_password, ...userWithoutPassword } = userData;
+
+        return { token, user: userWithoutPassword };
+    } catch (error: any) {
+        console.error('Erro no loginUser:', error.message);
         throw error;
     }
 };
