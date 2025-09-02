@@ -1,11 +1,11 @@
 import { config } from 'dotenv'
 import type { AWS } from '@serverless/typescript'
 
-import * as infraConfig from '@infraConfig/general'
+
 import * as authModule from '@modules/auth/index'
-import * as jobsModule from '@modules/jobs/index'
-import * as publicModule from '@modules/public/index'
-import * as userModule from '@modules/user/index'
+// import * as jobsModule from '@modules/jobs/index'
+// import * as publicModule from '@modules/public/index'
+// import * as userModule from '@modules/user/index'
 
 config()
 
@@ -21,62 +21,25 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs20.x',
     region: 'us-east-1',
-    memorySize: infraConfig.environment[process.env.ENVIRONMENT].memorySize,
+    memorySize: 256,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      LOCALSTACK_HOST: process.env.LOCALSTACK_HOST || 'localhost',
-      AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
-      AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
-      AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
-      AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
-      ENVIRONMENT: process.env.ENVIRONMENT,
-      AWS_ACCOUNT_OWNER: process.env.AWS_ACCOUNT_OWNER,
-      DB_DIALECT: process.env.DB_DIALECT,
-      DB_NAME: process.env.DB_NAME,
-      DB_USERNAME: process.env.DB_USERNAME,
-      DB_PASSWORD: process.env.DB_PASSWORD,
-      DB_HOST: process.env.DB_HOST,
-      DB_PORT: process.env.DB_PORT,
+      SUPABASE_URL: process.env.SUPABASE_URL!,
+      SUPABASE_KEY: process.env.SUPABASE_KEY!,
+      JWT_SECRET: process.env.JWT_SECRET!,
+      EMAIL_USER: process.env.EMAIL_USER!,
+      EMAIL_PASS: process.env.EMAIL_PASS!,
     },
-    iam: {
-      role: {
-        statements: [
-          {
-            Effect: 'Allow',
-            Action: [
-              's3:*',
-              'lambda:*',
-              'cloudwatch:*',
-              'logs:*',
-              'ssm:*',
-              'sns:*',
-              'sqs:*',
-            ],
-            Resource: '*',
-          },
-        ],
-      },
-    },
-    httpApi: {
-      authorizers: {
-        auth0: {
-          identitySource: '$request.header.Authorization',
-          issuerUrl: process.env.AUTH0_DOMAIN,
-          audience: [process.env.AUTH0_AUDIENCE],
-        },
-      },
-    },
+
   },
   functions: {
     ...authModule,
-    ...jobsModule,
-    ...publicModule,
-    ...userModule,
+    // ...jobsModule,
+    // ...publicModule,
+    // ...userModule,
   },
   package: { individually: true },
   custom: {

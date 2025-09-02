@@ -1,63 +1,48 @@
-import api from '@service/api'
-
-import { AUTH0 } from '@constants/index'
-import { RegisterSchema } from '@schemas/auth'
 import { APIGatewayProxyHandler } from 'aws-lambda'
+import { registerService } from '../../../services/auth.service'
+import { Gender, IAddress, UserType } from 'src/types/user.interface'
 
 interface RegisterBody {
-  name: string
+  fullName: string
   email: string
-  password: string
+  userPassword: string
+  phone?: string
+  cpf: string
+  address: IAddress
+  userType: UserType
+  gender: Gender;
+  dateOfBirth: string;
+  agreeTerms: boolean
+
 }
 
 export const register: APIGatewayProxyHandler = async (event) => {
   try {
-    const { name, email, password } = JSON.parse(event?.body) as RegisterBody
-    await RegisterSchema.validate(
-      { name, email, password },
-      { abortEarly: false },
-    )
+    const body = JSON.parse(event?.body || '{}') as RegisterBody
 
-    const response = await api.post('/dbconnections/signup', {
-      name,
-      email,
-      password,
-      connection: AUTH0.CONNECTION,
-      client_id: process.env.AUTH0_CLIENT_ID,
-    })
+    // await RegisterSchema.validate(body, { abortEarly: false })
+
+    const result = await registerService(body)
 
     return {
-      statusCode: response?.data?.status || 201,
+      statusCode: 201,
       body: JSON.stringify(
         {
-          message: 'User successfully registered.',
+          message: 'Usuário cadastrado com sucesso.',
+          user: result.user,
         },
         null,
         2,
       ),
     }
-  } catch (error) {
-    console.error(
-      'error registering new user:',
-      (error?.response?.data?.description?.rules &&
-        'Password does not meet strength requirements') ||
-        error?.errors ||
-        error?.response?.data?.description ||
-        error?.response?.data?.error ||
-        error,
-    )
+  } catch (error: any) {
+    console.error('Erro no cadastro:', error.message)
 
     return {
-      statusCode: error?.response?.status || 500,
+      statusCode: 500,
       body: JSON.stringify(
         {
-          error:
-            (error?.response?.data?.description?.rules &&
-              'Password does not meet strength requirements') ||
-            error?.errors ||
-            error?.response?.data?.description ||
-            error?.response?.data?.error ||
-            'Internal server error, please try again later.',
+          error: error.message || 'Erro interno, tente novamente mais tarde.',
         },
         null,
         2,
