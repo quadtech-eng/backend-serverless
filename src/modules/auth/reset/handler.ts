@@ -1,20 +1,20 @@
-import api from '@service/api'
 
-import { AUTH0 } from '@constants/index'
-import { RecoverySchema } from '@schemas/auth'
+
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { forgotPassService } from 'src/services/auth.service'
+import { resetPasswordService } from 'src/services/auth.service'
 
-interface RecoveryBody {
-  email: string
+interface ResetBody {
+  email:string 
+  code:string
+  newPassword: string
 }
 
-export const recovery: APIGatewayProxyHandler = async (event) => {
+export const reset: APIGatewayProxyHandler = async (event) => {
   try {
-    const { email } = JSON.parse(event?.body) as RecoveryBody
-    await RecoverySchema.validate({ email }, { abortEarly: false })
+    const { email,code, newPassword } = JSON.parse(event?.body) as ResetBody
+  
 
-    await forgotPassService(email)
+    await resetPasswordService(email,code, newPassword)
 
     return {
       statusCode:201,

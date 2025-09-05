@@ -1,4 +1,6 @@
 import { supabase } from '../lib/supabase.client';
+import { generateCode } from '@utils/generateCode';
+import { sendEmail } from 'src/lib/sendEmail';
 import { IUserData, ITokenPayload, ILoginData } from '../types/user.interface';
 import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -101,4 +103,104 @@ export const loginService = async (data: ILoginData) => {
         console.error('Erro no loginUser:', error.message);
         throw error;
     }
+};
+
+export const forgotPassService = async (email: string) => {
+  const { data: user } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (!user) {
+    return { message: "Se o email existir, enviaremos um código de recuperação" };
+  }
+
+  const rawCode = generateCode();
+  const hashedCode = await bcrypt.hash(rawCode, 10);
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+  await supabase.from("recovery_codes").upsert(
+    {
+      user_id: user.id,
+      code_hash: hashedCode,
+      expire_at: expiresAt.toISOString(),
+      created_at: new Date().toISOString(),
+      
+    },
+    { onConflict: "user_id" }
+  );
+
+  await sendEmail(email, rawCode);
+
+  return { message: "Se o email existir, enviaremos um código de recuperação" };
+};
+
+export const resetPasswordService = async (
+  email: string,
+  code: string,
+  newPassword: string
+) => {
+  if (!newPassword || newPassword.length < 8) {
+    throw new Error("A senha deve ter pelo menos 8 caracteres");
+  }
+
+  code = code.trim();
+
+  const { data: user, error: userError } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (userError || !user) {
+    throw new Error("Usuário não encontrado");
+  }
+
+  const { data: recovery, error: recoveryError } = await supabase
+    .from("recovery_codes")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
+  const isCodeValid = recovery?.code_hash
+    ? await bcrypt.compare(code, recovery.code_hash)
+    : false;
+
+  if (
+    recoveryError ||
+    !recovery ||
+    !isCodeValid ||
+    new Date(recovery.expire_at) < new Date()
+  ) {
+    throw new Error("Código inválido ou expirado");
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ user_password: hashedPassword })
+      .eq("id", user.id);
+
+    if (updateError) {
+      throw new Error("Erro ao atualizar senha");
+    }
+
+    
+    const { error: deleteError } = await supabase
+      .from("recovery_codes")
+      .delete()
+      .eq("id", recovery.id);
+
+    if (deleteError) {
+      throw new Error("Erro ao apagar código de recuperação");
+    }
+
+    return { message: "Senha redefinida com sucesso" };
+  } catch (error) {
+    console.error("Erro ao redefinir senha:", error);
+    throw error;
+  }
 };
